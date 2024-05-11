@@ -83,6 +83,18 @@ class DraggableFloatWidget extends StatefulWidget {
   /// See [GestureDetector.onTap] for details.
   final GestureTapCallback? onTap;
 
+  /// A pointer that might cause a tap with a primary button has contacted the
+  /// screen at a particular location.
+  ///
+  /// This is called after a short timeout, even if the winning gesture has not
+  /// yet been selected. If the tap gesture wins, [onTapUp] will be called,
+  /// otherwise [onTapCancel] will be called.
+  ///
+  /// See also:
+  ///
+  ///  * [kPrimaryButton], the button this callback responds to.
+  final GestureTapDownCallback? onTapDown;
+
   const DraggableFloatWidget({
     Key? key,
     this.width = defaultWidgetWidth,
@@ -91,6 +103,7 @@ class DraggableFloatWidget extends StatefulWidget {
     this.config = const DraggableFloatWidgetBaseConfig(),
     required this.child,
     this.onTap,
+    this.onTapDown,
   }) : super(key: key);
 
   @override
@@ -324,7 +337,8 @@ class _CustomDraggableFloatState extends State<DraggableFloatWidget>
         width: widget.width,
         height: widget.height,
         child: GestureDetector(
-          onTap: () => widget.onTap?.call(),
+          onTapDown: widget.onTapDown,
+          onTap: widget.onTap,
           child: widget.child,
         ),
       );
